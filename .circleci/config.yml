@@ -96,15 +96,9 @@ jobs:
           command: |
             ls
             export TAG=v${CIRCLE_BUILD_NUM}            
-            docker build -t scienceselva/capstone:$TAG .  
-      - run:
-          name: Push image to docker hub
-          paths:
-            - target
-          command: |
-            export TAG=v${CIRCLE_BUILD_NUM}
-            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD 
-            docker push scienceselva/capstone:$TAG.  
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker build -t scienceselva/capstone:$TAG .               
+            docker push scienceselva/capstone:$TAG  
 
 # -------------------------------------------------------------------------------
 #
