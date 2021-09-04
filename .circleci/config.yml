@@ -187,10 +187,11 @@ workflows:
           name: build-and-push-image-ecr
           account-url: AWS_ECR_URL
           region: AWS_DEFAULT_REGION
-          repo: selvacapstone
-          dockerfile: Dockerfile
-          path: ./
-          tag: capblue
+          repo: scienceselva
+          docker-login: true
+          dockerhub-username: ${DOCKER_USERNAME}
+          dockerhub-password: ${DOCKER_USERNAME}
+          tag: capstone
       - aws-eks/create-cluster:
           cluster-name: eks-orb-capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
           aws-region: $AWS_DEFAULT_REGION
@@ -199,8 +200,8 @@ workflows:
       - deploy-application:
           cluster-name: eks-orb-capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
           aws-region: $AWS_DEFAULT_REGION
-          docker-image-name: "${AWS_ECR_URL}/eks_orb_capstone_project:capblue"
-          version-info: "capblue"
+          docker-image-name: "${AWS_ECR_URL}/eks_orb_capstone_project:capstone"
+          version-info: "capstone"
           requires:
             - aws-eks/create-cluster
 #      - test-application:
