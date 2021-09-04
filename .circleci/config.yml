@@ -53,7 +53,7 @@ jobs:
           command: |
             hadolint Dockerfile        
 
-# -----------------------------  build the app   ----------------------------------------------------------------------------------
+# -----------------------------  build the app   -------------------------------------------------------------------------------------------
   build-app:
     <<: *dok_java        
     environment:      
@@ -79,9 +79,9 @@ jobs:
       - save_cache:
           paths: [target]
           key: jar-file
-# -----------------------------  build the docker image   ----------------------------------------------------------------------------------
+# -----------------------------  build and push the docker image to docker hub --------------------------------------------------------------
   
-  build-dockerimage:
+  build-push-dockerimage:
     <<: *dok_java            
     steps:    
       - checkout      
@@ -95,9 +95,16 @@ jobs:
             - target
           command: |
             ls
+            export TAG=v${CIRCLE_BUILD_NUM}            
+            docker build -t scienceselva/capstone:$TAG .  
+      - run:
+          name: Push image to docker hub
+          paths:
+            - target
+          command: |
             export TAG=v${CIRCLE_BUILD_NUM}
-            export IMAGE_NAME=capstone
-            docker build -t scienceselva/$IMAGE_NAME:$TAG .  
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD 
+            docker push scienceselva/capstone:$TAG.  
 
 # -------------------------------------------------------------------------------
 #
@@ -110,7 +117,7 @@ workflows:
       - lint-dockerfile
       - build-app:
           requires: [lint-dockerfile]
-      - build-dockerimage:
+      - build-push-dockerimage:
           requires: [build-app]
 
             
