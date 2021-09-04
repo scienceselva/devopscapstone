@@ -53,8 +53,8 @@ jobs:
           command: |
             hadolint Dockerfile        
 
-# -----------------------------  build the docker image   ----------------------------------------------------------------------------------
-  build-dockerimage:
+# -----------------------------  build the app   ----------------------------------------------------------------------------------
+  build-app:
     <<: *dok_java        
     environment:      
       MAVEN_OPTS: -Xmx3200m
@@ -68,17 +68,31 @@ jobs:
       - run: 
           name: build App
           command: |
-            mvn dependency:go-offline
-            ls
+            mvn dependency:go-offline            
       - save_cache:
           paths:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
 
+# -----------------------------  build the docker image   ----------------------------------------------------------------------------------
+  
+  build-docker:
+    <<: *dok_java        
+    environment:      
+      MAVEN_OPTS: -Xmx3200m
+    steps:    
+      - checkout      
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "pom.xml" }}          
+          - v1-dependencies-
+
       - setup_remote_docker:  
           version: 19.03.13          
       - run:
           name: Build Docker Image
+          paths:
+            - ~/.m2
           command: |
             ls
 #            export TAG=v${CIRCLE_BUILD_NUM}
