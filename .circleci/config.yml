@@ -190,7 +190,7 @@ workflows:
           repo: scienceselva
           docker-login: true
           dockerhub-username: DOCKER_USERNAME
-          dockerhub-password: DOCKER_USERNAME
+          dockerhub-password: DOCKER_PASSWORD
           tag: capstone
       - aws-eks/create-cluster:
           cluster-name: eks-orb-capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
