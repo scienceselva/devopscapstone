@@ -1,1 +1,2 @@
-CMD docker pull scienceselva/capstone
+FROM scienceselva/capstone
+ENTRYPOINT ["java","-jar","/app.jar"]
