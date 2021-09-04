@@ -1,2 +1,2 @@
-FROM scienceselva/capstone
+FROM scienceselva/capstone:v39
 ENTRYPOINT ["java","-jar","/app.jar"]
