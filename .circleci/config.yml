@@ -43,16 +43,16 @@ jobs:
   lint-dockerfile:
     <<: *dok_node
     steps:
-        - checkout
-        - run:
-            name: install dependencies
-            command: |
-              sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64
-              sudo chmod +x /bin/hadolint
-        - run:
-            name: Run Lint
-            command: |
-              hadolint Dockerfile        
+      - checkout
+      - run:
+          name: install dependencies
+          command: |
+            sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64
+            sudo chmod +x /bin/hadolint
+      - run:
+          name: Run Lint
+          command: |
+            hadolint Dockerfile        
 
 # -----------------------------  build the docker image   ----------------------------------------------------------------------------------
   build-dockerimage:
@@ -60,14 +60,14 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:  
-            version: 19.03.13
-            docker_layer_caching: true
+          version: 19.03.13
+          docker_layer_caching: true
       - run:
-            name: Build Docker Image
-            command: |
-              export TAG=v${CIRCLE_BUILD_NUM}
-              export IMAGE_NAME=capstone
-              docker build -t scienceselva/$IMAGE_NAME:$TAG .  
+          name: Build Docker Image
+          command: |
+            export TAG=v${CIRCLE_BUILD_NUM}
+            export IMAGE_NAME=capstone
+            docker build -t scienceselva/$IMAGE_NAME:$TAG .  
 
 # -------------------------------------------------------------------------------
 #
