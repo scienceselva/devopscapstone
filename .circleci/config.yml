@@ -76,13 +76,9 @@ jobs:
           command: |
             mvn package
             ls
-      - run:
-          name: Build Docker Image          
-          command: |
-            ls
-#            export TAG=v${CIRCLE_BUILD_NUM}
-#            export IMAGE_NAME=capstone
-#            docker build -t scienceselva/$IMAGE_NAME:$TAG .              
+      - save_cache:
+          paths: [target]
+          key: jar-file
 # -----------------------------  build the docker image   ----------------------------------------------------------------------------------
   
   build-dockerimage:
@@ -92,16 +88,14 @@ jobs:
     steps:    
       - checkout      
       - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "pom.xml" }}          
-          - v1-dependencies-
+          keys: [jar-file]
 
       - setup_remote_docker:  
           version: 19.03.13          
       - run:
           name: Build Docker Image
           paths:
-            - ~/.m2
+            - target
           command: |
             ls
 #            export TAG=v${CIRCLE_BUILD_NUM}
