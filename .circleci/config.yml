@@ -188,8 +188,8 @@ workflows:
           account-url: AWS_ECR_URL
           region: AWS_DEFAULT_REGION
           repo: selvacapstone
-          dockerfile: ~/project/Dockerfile
-          path: ~/project/
+          dockerfile: Dockerfile
+          path: ~/
           tag: capblue
       - aws-eks/create-cluster:
           cluster-name: eks-orb-capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
