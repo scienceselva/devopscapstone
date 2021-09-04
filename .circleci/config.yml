@@ -189,8 +189,8 @@ workflows:
           region: AWS_DEFAULT_REGION
           repo: scienceselva
           docker-login: true
-          dockerhub-username: ${DOCKER_USERNAME}
-          dockerhub-password: ${DOCKER_USERNAME}
+          dockerhub-username: DOCKER_USERNAME
+          dockerhub-password: DOCKER_USERNAME
           tag: capstone
       - aws-eks/create-cluster:
           cluster-name: eks-orb-capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
