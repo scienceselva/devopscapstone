@@ -69,6 +69,7 @@ jobs:
           name: build App
           command: |
             mvn dependency:go-offline
+            ls
       - save_cache:
           paths:
             - ~/.m2
@@ -80,9 +81,9 @@ jobs:
           name: Build Docker Image
           command: |
             ls
-            export TAG=v${CIRCLE_BUILD_NUM}
-            export IMAGE_NAME=capstone
-            docker build -t scienceselva/$IMAGE_NAME:$TAG .  
+#            export TAG=v${CIRCLE_BUILD_NUM}
+#            export IMAGE_NAME=capstone
+#            docker build -t scienceselva/$IMAGE_NAME:$TAG .  
 
 # -------------------------------------------------------------------------------
 #
