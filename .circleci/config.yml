@@ -1,7 +1,6 @@
 version: 2.1
 
-orbs:
-  slack: circleci/slack@4.4.2
+orbs:  
   aws-cli: circleci/aws-cli@2.0.3
 #  ------------------------------------------------------------------------------------------------------------------------------------------
 #  defaults (like global variables dubstiuted below)
@@ -18,9 +17,10 @@ docansibl: &dok_ansible
     docker:
       - image: python:3.7-alpine3.11 
 
-docansibl: &dok_java
+docjava: &dok_java
     docker:      
       - image: cimg/openjdk:16.0.2
+
 #  ------------------------------------------------------------------------------------------------------------------------------------------
 #  list of parameters
 #  ------------------------------------------------------------------------------------------------------------------------------------------
@@ -68,7 +68,7 @@ jobs:
               export TAG=v${CIRCLE_BUILD_NUM}
               export IMAGE_NAME=capstone
               docker build -t scienceselva/$IMAGE_NAME:$TAG .  
-                 
+
 # -------------------------------------------------------------------------------
 #
 #         WORKFLOW  STEPS STARTS FROM HERE
