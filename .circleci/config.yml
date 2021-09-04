@@ -76,7 +76,7 @@ jobs:
 
 # -----------------------------  build the docker image   ----------------------------------------------------------------------------------
   
-  build-docker:
+  build-dockerimage:
     <<: *dok_java        
     environment:      
       MAVEN_OPTS: -Xmx3200m
@@ -108,7 +108,9 @@ workflows:
   default:
     jobs:
       - lint-dockerfile
-      - build-dockerimage:
+      - build-app:
           requires: [lint-dockerfile]
+      - build-dockerimage:
+          requires: [build-app]
 
             
