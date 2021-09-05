@@ -138,8 +138,8 @@ jobs:
             resource-file-path: "deploys/deploy.yml"
             get-rollout-status: true
             resource-name: deployment/capstone
-#        - kubernetes/create-or-update-resource:
-#            resource-file-path: "deploys/deploy.yml"
+        - kubernetes/create-or-update-resource:
+            resource-file-path: "deploys/deploy.yml"
 
 # ----------------------------------------------------------------------------------------------------------------------------------
 #    Test the application
@@ -203,7 +203,7 @@ workflows:
           cluster-name: selva-capstone-cluster
           aws-region: $AWS_DEFAULT_REGION
           docker-image-name: "${AWS_ECR_URL}/scienceselva:capstone"
-          version-info: "capstone"
+          version-info: "capstonev1"
 #          requires:
 #            - aws-eks/create-cluster
 #      - test-application:
