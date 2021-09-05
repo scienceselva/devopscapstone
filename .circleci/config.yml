@@ -138,6 +138,16 @@ jobs:
 # ----------------------------------------------------------------------------------------------------------------------------------------
   setup-cluster-with-params:      
       executor: aws-eks/python3
+      parameters:
+        cluster-name:
+          type: string
+          default: "selva-capstone-cluster"
+        region:
+          type: string
+          default: ""
+        zones:
+          type: string
+          default: ""
       steps:
         - run:
           name: Install the eksctl tool
@@ -155,10 +165,15 @@ jobs:
                 SUDO="sudo"
               fi
               $SUDO mv eksctl_download/eksctl /usr/local/bin/
-              rmdir eksctl_download
-        - save_cache:
-            paths: ./
-            key: eksctl-file            
+              rmdir eksctl_download        
+        - aws-eks/create-cluster:            
+            name: create-eks-cluster
+            node-type: "t2.micro"
+            nodes: 2
+            nodes-min: 1
+            nodes-max: 3
+            cluster-name: selva-capstone-cluster
+            aws-region: AWS_DEFAULT_REGION           
 # ----------------------------------------------------------------------------------------------------------------------------------------
   deploy-application:
       executor: aws-eks/python3
@@ -251,25 +266,25 @@ workflows:
       - setup-cluster-with-params:
           requires: 
             - build-and-push-image-ecr
-      - aws-eks/create-cluster:            
-          name: create-eks-cluster
-          node-type: "t2.micro"
-          nodes: 2
-          nodes-min: 1
-          nodes-max: 3
-          cluster-name: capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
-          aws-region: AWS_DEFAULT_REGION
-          requires: 
-            - build-and-push-image-ecr
+      # - aws-eks/create-cluster:            
+      #     name: create-eks-cluster
+      #     node-type: "t2.micro"
+      #     nodes: 2
+      #     nodes-min: 1
+      #     nodes-max: 3
+      #     cluster-name: selva-capstone-cluster
+      #     aws-region: AWS_DEFAULT_REGION
+      #     requires: 
+      #       - build-and-push-image-ecr
       - deploy-application:
           cluster-name: selva-capstone-cluster
           aws-region: $AWS_DEFAULT_REGION
           docker-image-name: "${AWS_ECR_URL}/scienceselva:capstone"
           version-info: "capstonev1"
           requires: 
-            - create-eks-cluster
+            - setup-cluster-with-params
 #      - test-application:
-#          cluster-name: capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
+#          cluster-name: selva-capstone-cluster
 #          aws-region: $AWS_DEFAULT_REGION
 #          expected-version-info: "capblue"
 #          requires:
