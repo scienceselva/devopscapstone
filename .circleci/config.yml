@@ -108,6 +108,35 @@ jobs:
 #    and test the pods
 # ----------------------------------------------------------------------------------------------------------------------------------------
 
+
+#    NOT RUNNING CURRENTLY done thro orbs  
+deploy-infrastructure:
+    <<: *dok_awscli         
+    steps:
+      - checkout
+      - run:
+          name: install dependancy
+          command: yum install -y tar gzip
+      - run:
+          name: deploy cluster infrastructure
+          command: |
+            aws cloudformation deploy \                            
+              --stack-name EKS-create \
+              --template-body  awscf/createcluster.yml \
+              --parameters clusterconfig.json \
+              --region us-west-2 \
+              --capabilities CAPABILITY_NAMED_IAM
+      - run:
+          name: deploy nodes infrastructure
+          command: |
+            aws cloudformation deploy \                            
+              --stack-name EKS-node \
+              --template-body  awscf/createnodes.yml \
+              --parameters nodeconfig.json \
+              --region us-west-2 \
+              --capabilities CAPABILITY_NAMED_IAM        
+
+# ----------------------------------------------------------------------------------------------------------------------------------------
   deploy-application:
       executor: aws-eks/python3
       parameters:
@@ -180,33 +209,33 @@ jobs:
 workflows:
   default:
     jobs:
-    #  - lint-dockerfile
-    #  - build-app:
-    #      requires: [lint-dockerfile]
-    #  - build-push-dockerimage:
-    #      requires: [build-app]
-    #  - aws-ecr/build-and-push-image:
-    #      name: build-and-push-image-ecr
-    #      account-url: AWS_ECR_URL
-    #      region: AWS_DEFAULT_REGION
-    #      repo: scienceselva
-    #      docker-login: true
-    #      dockerhub-username: DOCKER_USERNAME
-    #      dockerhub-password: DOCKER_PASSWORD
-    #      dockerfile: dockerhub
-    #      tag: capstone
-      # - aws-eks/create-cluster:
-      #     cluster-name: capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
-      #     aws-region: AWS_DEFAULT_REGION
-      #     requires:
-          #   - build-and-push-image-ecr
+      - lint-dockerfile
+      - build-app:
+          requires: [lint-dockerfile]
+      - build-push-dockerimage:
+          requires: [build-app]
+      - aws-ecr/build-and-push-image:
+          name: build-and-push-image-ecr
+          account-url: AWS_ECR_URL
+          region: AWS_DEFAULT_REGION
+          repo: scienceselva
+          docker-login: true
+          dockerhub-username: DOCKER_USERNAME
+          dockerhub-password: DOCKER_PASSWORD
+          dockerfile: dockerhub
+          tag: capstone
+      - aws-eks/create-cluster:
+          cluster-name: capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
+          aws-region: AWS_DEFAULT_REGION
+          requires:
+            - build-and-push-image-ecr
       - deploy-application:
           cluster-name: selva-capstone-cluster
           aws-region: $AWS_DEFAULT_REGION
           docker-image-name: "${AWS_ECR_URL}/scienceselva:capstone"
           version-info: "capstonev1"
-          # requires:
-          #   - aws-eks/create-cluster
+          requires:
+            - aws-eks/create-cluster
 #      - test-application:
 #          cluster-name: capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
 #          aws-region: $AWS_DEFAULT_REGION
