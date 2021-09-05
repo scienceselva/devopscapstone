@@ -1,2 +1,2 @@
-FROM scienceselva/capstone:v39
+FROM scienceselva/capstone:awsdevops
 ENTRYPOINT ["java","-jar","/app.jar"]

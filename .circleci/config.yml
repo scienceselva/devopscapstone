@@ -96,11 +96,10 @@ jobs:
           paths:
             - target
           command: |
-            ls
-            export TAG=v${CIRCLE_BUILD_NUM}            
+            ls                        
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker build -t scienceselva/capstone:$TAG .               
-            docker push scienceselva/capstone:$TAG  
+            docker build -t scienceselva/capstone:awsdevops .               
+            docker push scienceselva/capstone:awsdevops  
 
 # ----------------------------------------------------------------------------------------------------------------------------------------
 #  create AWS infrastructure
@@ -110,7 +109,7 @@ jobs:
 
 
 #    NOT RUNNING CURRENTLY done thro orbs  
-deploy-infrastructure:
+  deploy-infrastructure:
     <<: *dok_awscli         
     steps:
       - checkout
