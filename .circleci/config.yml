@@ -229,7 +229,7 @@ workflows:
           cluster-name: capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
           aws-region: AWS_DEFAULT_REGION
           requires:
-            - [build-and-push-image-ecr]
+            - [aws-ecr/build-and-push-image]
       - deploy-application:
           cluster-name: selva-capstone-cluster
           aws-region: $AWS_DEFAULT_REGION
