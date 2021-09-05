@@ -135,9 +135,9 @@ jobs:
             install-kubectl: true
             aws-region: << parameters.aws-region >>
         - run:
-            name: add/update new ARN
+            name: Add/Update new ARN
             command: |
-              aws sts assume-role --role-arn "arn:aws:iam::691009035028:role/CFAWS-eks-role" --role-session-name capstone-session
+              aws eks update-kubeconfig --name selva-capstone-cluster --region us-west-2 --role-arn arn:aws:iam::691009035028:role/CFAWS-eks-role
               aws sts get-caller-identity              
         - kubernetes/create-or-update-resource:            
             resource-file-path: "deploys/deploy.yml"
