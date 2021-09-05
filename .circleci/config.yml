@@ -138,16 +138,6 @@ jobs:
 # ----------------------------------------------------------------------------------------------------------------------------------------
   setup-cluster-with-params:      
       executor: aws-eks/python3
-      parameters:
-        cluster-name:
-          type: string
-          default: "selva-capstone-cluster"
-        region:
-          type: string
-          default: ""
-        zones:
-          type: string
-          default: ""
       steps:
         - checkout
         - run:
