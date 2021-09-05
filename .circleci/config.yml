@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:   
   aws-cli: circleci/aws-cli@2.0.3 
-  aws-eks: circleci/aws-eks@1.1.0
+  aws-eks: circleci/aws-eks@0.2.3
   aws-ecr: circleci/aws-ecr@7.2.0
   kubernetes: circleci/kubernetes@0.4.0
 #  ------------------------------------------------------------------------------------------------------------------------------------------
@@ -195,18 +195,18 @@ workflows:
     #      dockerhub-password: DOCKER_PASSWORD
     #      dockerfile: dockerhub
     #      tag: capstone
-    #    - aws-eks/create-cluster:
-    #        cluster-name: capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
-    #        aws-region: AWS_DEFAULT_REGION
-    #       requires:
-    #         - build-and-push-image-ecr
+      - aws-eks/create-cluster:
+          cluster-name: capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
+          aws-region: AWS_DEFAULT_REGION
+          # requires:
+          #   - build-and-push-image-ecr
       - deploy-application:
-          cluster-name: selva-capstone-cluster
+          cluster-name: capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
           aws-region: $AWS_DEFAULT_REGION
           docker-image-name: "${AWS_ECR_URL}/scienceselva:capstone"
           version-info: "capstonev1"
-#          requires:
-#            - aws-eks/create-cluster
+          requires:
+            - aws-eks/create-cluster
 #      - test-application:
 #          cluster-name: capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
 #          aws-region: $AWS_DEFAULT_REGION
