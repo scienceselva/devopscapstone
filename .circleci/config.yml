@@ -180,26 +180,26 @@ jobs:
 workflows:
   default:
     jobs:
-#      - lint-dockerfile
-#      - build-app:
-#          requires: [lint-dockerfile]
-#      - build-push-dockerimage:
-#          requires: [build-app]
-#      - aws-ecr/build-and-push-image:
-#          name: build-and-push-image-ecr
-#          account-url: AWS_ECR_URL
-#          region: AWS_DEFAULT_REGION
-#          repo: scienceselva
-#          docker-login: true
-#          dockerhub-username: DOCKER_USERNAME
-#          dockerhub-password: DOCKER_PASSWORD
-#          dockerfile: dockerhub
-#          tag: capstone
-      - aws-eks/create-cluster:
-          cluster-name: capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
-          aws-region: AWS_DEFAULT_REGION
-#          requires:
-#            - build-and-push-image-ecr
+    #  - lint-dockerfile
+    #  - build-app:
+    #      requires: [lint-dockerfile]
+    #  - build-push-dockerimage:
+    #      requires: [build-app]
+    #  - aws-ecr/build-and-push-image:
+    #      name: build-and-push-image-ecr
+    #      account-url: AWS_ECR_URL
+    #      region: AWS_DEFAULT_REGION
+    #      repo: scienceselva
+    #      docker-login: true
+    #      dockerhub-username: DOCKER_USERNAME
+    #      dockerhub-password: DOCKER_PASSWORD
+    #      dockerfile: dockerhub
+    #      tag: capstone
+    #    - aws-eks/create-cluster:
+    #        cluster-name: capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
+    #        aws-region: AWS_DEFAULT_REGION
+    #       requires:
+    #         - build-and-push-image-ecr
       - deploy-application:
           cluster-name: selva-capstone-cluster
           aws-region: $AWS_DEFAULT_REGION
