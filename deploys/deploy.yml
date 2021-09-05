@@ -1,19 +1,19 @@
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: profilesrch-deployment
+  name: capstone
 spec:
   selector:
     matchLabels:
-      app: profilesrch
+      app: capstone
   replicas: 2 # tells deployment to run 2 pods matching the template
   template:
     metadata:
       labels:
-        app: profilesrch
+        app: capstone
     spec:
       containers:
-      - name: profilesrch
+      - name: capstone
         image: scienceselva:capstone
         ports:
         - containerPort: 8080

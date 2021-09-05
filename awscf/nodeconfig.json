@@ -1,0 +1,34 @@
+[
+    {
+        "ParameterKey": "ClusterName",
+        "ParameterValue": "selva-capstone-cluster"
+    },
+    {
+        "ParameterKey": "BootstrapArguments",
+        "ParameterValue": ""
+    }, 
+    {
+        "ParameterKey": "KeyName",
+        "ParameterValue": "capstonekey"
+    },
+    {
+        "ParameterKey": "NodeGroupName",
+        "ParameterValue": "capstone-node1"
+    },
+    {
+        "ParameterKey": "NodeImageId",
+        "ParameterValue": "ami-0c2d06d50ce30b442"
+    }, 
+    {
+        "ParameterKey": "ClusterControlPlaneSecurityGroup",
+        "ParameterValue": "sg-0fb45f3f95bf26eb6"
+    },
+    {
+        "ParameterKey": "Subnets",
+        "ParameterValue": "subnet-00dd32bcc15746a03,subnet-01e545195d0ce8c3f,subnet-0a5c643df5cc1f3f9,subnet-0fa6d2beef6b8d574"
+    },
+    {
+        "ParameterKey": "VpcId",
+        "ParameterValue": "vpc-0a2f41329ffd10b94"
+    }
+]
