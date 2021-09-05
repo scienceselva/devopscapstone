@@ -136,7 +136,8 @@ jobs:
             aws-region: << parameters.aws-region >>
         - run:
             name: add/update new ARN
-            aws eks update-kubeconfig --name selva-capstone-cluster --region us-west-2
+            command: |
+              aws eks update-kubeconfig --name selva-capstone-cluster --region us-west-2
         - kubernetes/create-or-update-resource:            
             resource-file-path: "deploys/deploy.yml"
             resource-name: deployment/capstone
