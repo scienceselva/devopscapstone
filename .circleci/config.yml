@@ -140,7 +140,10 @@ jobs:
       executor: aws-eks/python3
       steps:
         - checkout
-        - run: ./awscf/eks.sh          
+        - run: 
+          name: run shell file
+          command: |
+            -sh ./awscf/eks.sh          
         - aws-eks/create-cluster:            
             node-type: "t2.micro"
             nodes: 2
@@ -221,25 +224,25 @@ jobs:
 workflows:
   default:
     jobs:
-      - lint-dockerfile
-      - build-app:
-          requires: [lint-dockerfile]
-      - build-push-dockerimage:
-          requires: [build-app]
-      - aws-ecr/build-and-push-image:
-          name: build-and-push-image-ecr
-          account-url: AWS_ECR_URL
-          region: AWS_DEFAULT_REGION
-          repo: scienceselva
-          docker-login: true
-          dockerhub-username: DOCKER_USERNAME
-          dockerhub-password: DOCKER_PASSWORD
-          dockerfile: dockerhub
-          tag: capstone
-          requires: [build-push-dockerimage]
+      # - lint-dockerfile
+      # - build-app:
+      #     requires: [lint-dockerfile]
+      # - build-push-dockerimage:
+      #     requires: [build-app]
+      # - aws-ecr/build-and-push-image:
+      #     name: build-and-push-image-ecr
+      #     account-url: AWS_ECR_URL
+      #     region: AWS_DEFAULT_REGION
+      #     repo: scienceselva
+      #     docker-login: true
+      #     dockerhub-username: DOCKER_USERNAME
+      #     dockerhub-password: DOCKER_PASSWORD
+      #     dockerfile: dockerhub
+      #     tag: capstone
+      #     requires: [build-push-dockerimage]
       - setup-cluster-with-params:
-          requires: 
-            - build-and-push-image-ecr
+          # requires: 
+          #   - build-and-push-image-ecr
       # - aws-eks/create-cluster:            
       #     name: create-eks-cluster
       #     node-type: "t2.micro"
