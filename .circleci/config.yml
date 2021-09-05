@@ -195,9 +195,9 @@ workflows:
 #          dockerhub-password: DOCKER_PASSWORD
 #          dockerfile: dockerhub
 #          tag: capstone
-#      - aws-eks/create-cluster:
-#          cluster-name: capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
-#          aws-region: AWS_DEFAULT_REGION
+      - aws-eks/create-cluster:
+          cluster-name: capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
+          aws-region: AWS_DEFAULT_REGION
 #          requires:
 #            - build-and-push-image-ecr
       - deploy-application:
