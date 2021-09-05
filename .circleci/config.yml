@@ -158,9 +158,9 @@ jobs:
             fi
             $SUDO mv eksctl_download/eksctl /usr/local/bin/
             rmdir eksctl_download
-      - save_cache:
-          paths: ./
-          key: eksctl-file            
+        - save_cache:
+            paths: ./
+            key: eksctl-file            
 # ----------------------------------------------------------------------------------------------------------------------------------------
   deploy-application:
       executor: aws-eks/python3
