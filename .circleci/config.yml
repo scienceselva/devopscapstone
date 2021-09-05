@@ -142,7 +142,6 @@ jobs:
         - checkout
         - run: ./awscf/eks.sh          
         - aws-eks/create-cluster:            
-            name: create-eks-cluster
             node-type: "t2.micro"
             nodes: 2
             nodes-min: 1
