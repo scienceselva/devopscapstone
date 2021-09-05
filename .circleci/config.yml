@@ -140,13 +140,7 @@ jobs:
       executor: aws-eks/python3
       steps:
         - checkout
-        - run:
-          name: Install the eksctl tool
-          command: |             
-            mkdir -p eksctl_download            
-            chmod +x eksctl_download/eksctl            
-            sudo mv eksctl_download/eksctl /usr/local/bin/
-            rmdir eksctl_download        
+        - run: ./awscf/eks.sh          
         - aws-eks/create-cluster:            
             name: create-eks-cluster
             node-type: "t2.micro"
