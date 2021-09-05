@@ -1,0 +1,10 @@
+[
+    {
+        "ParameterKey": "EKSIAMRoleName",
+        "ParameterValue": "CFAWS-eks-role"
+    },    
+    {
+        "ParameterKey": "EKSClusterName",
+        "ParameterValue": "selva-capstone-cluster"
+    }
+]
