@@ -138,6 +138,7 @@ jobs:
             name: add/update new ARN
             command: |
               aws eks update-kubeconfig --name selva-capstone-cluster --region us-west-2
+              aws eks update-kubeconfig --name selva-capstone-cluster --region us-west-2 --role-arn arn:aws:iam::691009035028:role/CFAWS-eks-role
         - kubernetes/create-or-update-resource:            
             resource-file-path: "deploys/deploy.yml"
             resource-name: deployment/capstone
