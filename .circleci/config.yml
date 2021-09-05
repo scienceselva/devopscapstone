@@ -134,13 +134,9 @@ jobs:
             cluster-name: << parameters.cluster-name >>
             install-kubectl: true
             aws-region: << parameters.aws-region >>
-        - kubernetes/create-or-update-resource:
-            resource-file-path: "deploys/deploy.yml"            
-            get-rollout-status: true
-            resource-name: deployment/capstone
-
+        - kubernetes/create-or-update-resource:            
             resource-file-path: "deploys/deploy.yml"
-            resource-name: "deployment/nginx-deployment"
+            resource-name: deployment/capstone
             get-rollout-status: true
             show-kubectl-command: true            
 #        - kubernetes/create-or-update-resource:
