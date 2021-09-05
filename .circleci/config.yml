@@ -133,8 +133,34 @@ jobs:
               --template-body  awscf/createnodes.yml \
               --parameters nodeconfig.json \
               --region us-west-2 \
-              --capabilities CAPABILITY_NAMED_IAM        
-
+              --capabilities CAPABILITY_NAMED_IAM 
+                     
+# ----------------------------------------------------------------------------------------------------------------------------------------
+  setup-cluster-with-params:      
+      executor: aws-eks/python3
+      steps:
+        - run:
+          name: Install the eksctl tool
+          command: |
+            if which eksctl > /dev/null; then
+              echo "eksctl is already installed"
+              exit 0
+            fi
+            mkdir -p eksctl_download
+            curl --silent --location --retry 5 "
+            https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname
+            -s)_amd64.tar.gz" \
+            | tar xz -C eksctl_download
+            chmod +x eksctl_download/eksctl
+            SUDO=""
+            if [ $(id -u) -ne 0 ] && which sudo > /dev/null ; then
+            SUDO="sudo"
+            fi
+            $SUDO mv eksctl_download/eksctl /usr/local/bin/
+            rmdir eksctl_download
+      - save_cache:
+          paths: ./
+          key: eksctl-file            
 # ----------------------------------------------------------------------------------------------------------------------------------------
   deploy-application:
       executor: aws-eks/python3
@@ -224,8 +250,15 @@ workflows:
           dockerfile: dockerhub
           tag: capstone
           requires: [build-push-dockerimage]
-      - aws-eks/create-cluster:
+      - setup-cluster-with-params:
+          requires: 
+            - build-and-push-image-ecr
+      - aws-eks/create-cluster:            
           name: create-eks-cluster
+          node-type: "t2.micro"
+          nodes: 2
+          nodes-min: 1
+          nodes-max: 3
           cluster-name: capstone-project-deployment-${CIRCLE_WORKFLOW_ID:0:7}
           aws-region: AWS_DEFAULT_REGION
           requires: 
