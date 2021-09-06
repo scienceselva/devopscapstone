@@ -231,9 +231,8 @@ jobs:
         - run:
             name: Wait for service to be ready
             command: |
-              kubectl get nodes -o wide |  awk {'print $1" " $2 " " $7'} | column -t
-              kubectl get nodes -o wide |  awk {'print $1" " $2 " " $6'} | column -t
-              
+              kubectl get nodes              
+
 # -------------------------------------------------------------------------------
 #
 #         WORKFLOW  STEPS STARTS FROM HERE
