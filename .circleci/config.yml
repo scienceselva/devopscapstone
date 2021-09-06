@@ -165,6 +165,10 @@ jobs:
               fi
               $SUDO mv eksctl_download/eksctl /usr/local/bin/
               rmdir eksctl_download
+        - run:
+            name: check id access
+            command: |
+              aws sts get-caller-identity
         - aws-eks/create-cluster:            
             node-type: "t2.micro"
             nodes: 2
