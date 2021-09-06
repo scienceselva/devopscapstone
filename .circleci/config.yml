@@ -341,7 +341,7 @@ workflows:
           aws-region: $AWS_DEFAULT_REGION
           expected-version-info: "awsdevops"
           requires:
-            - deploy-application
+            - test-application
       - remove-application:
           cluster-name: selva-capstone-cluster
           aws-region: $AWS_DEFAULT_REGION
