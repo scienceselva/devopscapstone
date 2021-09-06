@@ -172,7 +172,7 @@ jobs:
             nodes-max: 3
             ssh-access: false
             cluster-name: << parameters.cluster-name >>
-            aws-region: AWS_DEFAULT_REGION             
+            aws-region: $AWS_DEFAULT_REGION             
 # ----------------------------------------------------------------------------------------------------------------------------------------
   deploy-application:
       executor: aws-eks/python3
