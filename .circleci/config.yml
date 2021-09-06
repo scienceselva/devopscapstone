@@ -235,8 +235,13 @@ jobs:
         - run:
             name: Wait for service to be ready
             command: |         
-              kubectl get service/capstone-service-loadbalancer
-              kubectl expose deployment capstone  --type=LoadBalancer  --name=capstone-service-loadbalancer
+              kubectl describe pod capstone-7d9bd8c54d-9hpkx
+              kubectl describe pod capstone-7d9bd8c54d-n2p75
+              kubectl describe pod capstone-7d9bd8c54d-zdlkm
+              
+#
+#              kubectl get service/capstone-service-loadbalancer
+#              kubectl expose deployment capstone  --type=LoadBalancer  --name=capstone-service-loadbalancer
               
 # -------------------------------------------------------------------------------
 #
