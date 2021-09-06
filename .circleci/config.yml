@@ -206,6 +206,34 @@ jobs:
             command: |
               kubectl get pods
               kubectl get services
+# ----------------------------------------------------------------------------------------------------------------------------------  
+  get-app-details:
+      executor: aws-eks/python3
+      parameters:
+        cluster-name:
+          description: |
+            Name of the EKS cluster
+          type: string
+        aws-region:
+          description: |
+            AWS region
+          type: string
+          default: ""
+        expected-version-info:
+          description: |
+            Expected app version 
+          type: string
+      steps:
+        - aws-eks/update-kubeconfig-with-authenticator:
+            cluster-name: << parameters.cluster-name >>
+            install-kubectl: true
+            aws-region: << parameters.aws-region >>
+        - run:
+            name: Wait for service to be ready
+            command: |
+              kubectl get nodes -o wide |  awk {'print $1" " $2 " " $7'} | column -t
+              kubectl get nodes -o wide |  awk {'print $1" " $2 " " $6'} | column -t
+              
 # -------------------------------------------------------------------------------
 #
 #         WORKFLOW  STEPS STARTS FROM HERE
@@ -214,36 +242,42 @@ jobs:
 workflows:
   default:
     jobs:
-      - lint-dockerfile
-      - build-app:
-          requires: [lint-dockerfile]
-      - build-push-dockerimage:
-          requires: [build-app]
-      - aws-ecr/build-and-push-image:
-          name: build-and-push-image-ecr
-          account-url: AWS_ECR_URL
-          region: AWS_DEFAULT_REGION
-          repo: scienceselva
-          docker-login: true
-          dockerhub-username: DOCKER_USERNAME
-          dockerhub-password: DOCKER_PASSWORD
-          dockerfile: dockerhub
-          tag: capstone
-          requires: [build-push-dockerimage]
-      - setup-cluster:
-          cluster-name: selva-capstone-cluster
-          requires: 
-            - build-and-push-image-ecr      
-      - deploy-application:
-          cluster-name: selva-capstone-cluster
-          aws-region: $AWS_DEFAULT_REGION
-          docker-image-name: "${AWS_ECR_URL}/scienceselva:capstone"
-          version-info: "awsdevops"
-          requires: 
-            - setup-cluster
-      - test-application:
+      # - lint-dockerfile
+      # - build-app:
+      #     requires: [lint-dockerfile]
+      # - build-push-dockerimage:
+      #     requires: [build-app]
+      # - aws-ecr/build-and-push-image:
+      #     name: push-image-to-ecr
+      #     account-url: AWS_ECR_URL
+      #     region: AWS_DEFAULT_REGION
+      #     repo: scienceselva
+      #     docker-login: true
+      #     dockerhub-username: DOCKER_USERNAME
+      #     dockerhub-password: DOCKER_PASSWORD
+      #     dockerfile: dockerhub
+      #     tag: capstone
+      #     requires: [build-push-dockerimage]
+      # - setup-cluster:
+      #     cluster-name: selva-capstone-cluster
+      #     requires: 
+      #       - push-image-to-ecr      
+      # - deploy-application:
+      #     cluster-name: selva-capstone-cluster
+      #     aws-region: $AWS_DEFAULT_REGION
+      #     docker-image-name: "${AWS_ECR_URL}/scienceselva:capstone"
+      #     version-info: "awsdevops"
+      #     requires: 
+      #       - setup-cluster
+      # - test-application:
+      #     cluster-name: selva-capstone-cluster
+      #     aws-region: $AWS_DEFAULT_REGION
+      #     expected-version-info: "awsdevops"
+      #     requires:
+      #       - deploy-application           
+      - get-app-details:
           cluster-name: selva-capstone-cluster
           aws-region: $AWS_DEFAULT_REGION
           expected-version-info: "awsdevops"
-          requires:
-            - deploy-application           
+          # requires:
+          #   - deploy-application                       
