@@ -95,8 +95,7 @@ jobs:
           name: Build Docker Image
           paths:
             - target
-          command: |
-            ls                        
+          command: |            
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker build -t scienceselva/capstone:awsdevops .               
             docker push scienceselva/capstone:awsdevops  
@@ -138,11 +137,6 @@ jobs:
               $SUDO mv eksctl_download/eksctl /usr/local/bin/
               rmdir eksctl_download
         - aws-eks/create-cluster:
-            node-type: t2.small
-            nodes: 2
-            nodes-min: 1
-            nodes-max: 3
-            ssh-access: false
             cluster-name: << parameters.cluster-name >>
             aws-region: $AWS_DEFAULT_REGION             
 # ----------------------------------------------------------------------------------------------------------------------------------------
