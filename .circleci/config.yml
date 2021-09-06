@@ -176,12 +176,7 @@ jobs:
             aws-region: << parameters.aws-region >>                      
         - kubernetes/create-or-update-resource:            
             resource-file-path: "deploys/deploy.yml"
-            resource-name: deployment/capstone
-            get-rollout-status: true
-            show-kubectl-command: true            
-#        - kubernetes/create-or-update-resource:
-#            resource-file-path: "deploys/deploy.yml"
-
+            resource-name: deployment/capstone                      
 # ----------------------------------------------------------------------------------------------------------------------------------
 #    Test the application
 # ----------------------------------------------------------------------------------------------------------------------------------
@@ -219,38 +214,36 @@ jobs:
 workflows:
   default:
     jobs:
-      # - lint-dockerfile
-      # - build-app:
-      #     requires: [lint-dockerfile]
-      # - build-push-dockerimage:
-      #     requires: [build-app]
-      # - aws-ecr/build-and-push-image:
-      #     name: build-and-push-image-ecr
-      #     account-url: AWS_ECR_URL
-      #     region: AWS_DEFAULT_REGION
-      #     repo: scienceselva
-      #     docker-login: true
-      #     dockerhub-username: DOCKER_USERNAME
-      #     dockerhub-password: DOCKER_PASSWORD
-      #     dockerfile: dockerhub
-      #     tag: capstone
-      #     requires: [build-push-dockerimage]
-      # - setup-cluster:
-      #     cluster-name: selva-capstone-cluster
-      #     requires: 
-      #       - build-and-push-image-ecr      
+      - lint-dockerfile
+      - build-app:
+          requires: [lint-dockerfile]
+      - build-push-dockerimage:
+          requires: [build-app]
+      - aws-ecr/build-and-push-image:
+          name: build-and-push-image-ecr
+          account-url: AWS_ECR_URL
+          region: AWS_DEFAULT_REGION
+          repo: scienceselva
+          docker-login: true
+          dockerhub-username: DOCKER_USERNAME
+          dockerhub-password: DOCKER_PASSWORD
+          dockerfile: dockerhub
+          tag: capstone
+          requires: [build-push-dockerimage]
+      - setup-cluster:
+          cluster-name: selva-capstone-cluster
+          requires: 
+            - build-and-push-image-ecr      
       - deploy-application:
           cluster-name: selva-capstone-cluster
           aws-region: $AWS_DEFAULT_REGION
           docker-image-name: "${AWS_ECR_URL}/scienceselva:capstone"
           version-info: "awsdevops"
-          # requires: 
-          #   - setup-cluster
+          requires: 
+            - setup-cluster
       - test-application:
           cluster-name: selva-capstone-cluster
           aws-region: $AWS_DEFAULT_REGION
           expected-version-info: "awsdevops"
           requires:
-            - deploy-application
-
-            
+            - deploy-application           
