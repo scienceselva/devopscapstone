@@ -235,21 +235,21 @@ workflows:
       #     dockerfile: dockerhub
       #     tag: capstone
       #     requires: [build-push-dockerimage]
-      - setup-cluster:
-          cluster-name: selva-capstone-cluster
-          # requires: 
-          #   - build-and-push-image-ecr      
+      # - setup-cluster:
+      #     cluster-name: selva-capstone-cluster
+      #     requires: 
+      #       - build-and-push-image-ecr      
       - deploy-application:
           cluster-name: selva-capstone-cluster
           aws-region: $AWS_DEFAULT_REGION
           docker-image-name: "${AWS_ECR_URL}/scienceselva:capstone"
-          version-info: "capstonev1"
-          requires: 
-            - setup-cluster
+          version-info: "awsdevops"
+          # requires: 
+          #   - setup-cluster
       - test-application:
           cluster-name: selva-capstone-cluster
           aws-region: $AWS_DEFAULT_REGION
-          expected-version-info: "capstonev1"
+          expected-version-info: "awsdevops"
           requires:
             - deploy-application
 
