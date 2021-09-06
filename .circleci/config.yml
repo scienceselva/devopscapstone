@@ -228,12 +228,15 @@ jobs:
             cluster-name: << parameters.cluster-name >>
             install-kubectl: true
             aws-region: << parameters.aws-region >>
+        - kubernetes/create-or-update-resource:            
+            resource-file-path: "deploys/loadbalancer.yml"
+            resource-name: deployment/capstone              
         - run:
             name: Wait for service to be ready
-            command: |
-              ls
-              kubectl get nodes              
-              kubectl create -f deploys/loadbalancer.yml
+            command: |         
+              kubectl get service/capstone-service-loadbalancer
+              kubectl expose deployment deployment/capstone  --type=LoadBalancer  --name=capstone-service-loadbalancer
+              
 # -------------------------------------------------------------------------------
 #
 #         WORKFLOW  STEPS STARTS FROM HERE
