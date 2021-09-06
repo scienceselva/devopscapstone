@@ -312,8 +312,8 @@ workflows:
       - remove-application:
           cluster-name: selva-capstone-cluster
           aws-region: $AWS_DEFAULT_REGION
-          requires:
-            - test-application
+          # requires:
+          #   - set-loadbalancer
       - aws-eks/delete-cluster:
           cluster-name: selva-capstone-cluster
           aws-region: $AWS_DEFAULT_REGION
