@@ -231,9 +231,9 @@ jobs:
         - run:
             name: Wait for service to be ready
             command: |
-              kubectl get nodes
               ls
-              kubectl create -f deploys/loadbalancer.yaml
+              kubectl get nodes              
+              kubectl create -f deploys/loadbalancer.yml
 # -------------------------------------------------------------------------------
 #
 #         WORKFLOW  STEPS STARTS FROM HERE
