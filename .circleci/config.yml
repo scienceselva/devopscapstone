@@ -165,8 +165,7 @@ jobs:
               fi
               $SUDO mv eksctl_download/eksctl /usr/local/bin/
               rmdir eksctl_download
-        - aws-eks/create-cluster:            
-            node-type: "t2.micro"
+        - aws-eks/create-cluster:
             nodes: 2
             nodes-min: 1
             nodes-max: 3
