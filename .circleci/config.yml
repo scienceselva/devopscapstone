@@ -170,6 +170,7 @@ jobs:
             nodes: 2
             nodes-min: 1
             nodes-max: 3
+            ssh-access: false
             cluster-name: << parameters.cluster-name >>
             aws-region: AWS_DEFAULT_REGION             
 # ----------------------------------------------------------------------------------------------------------------------------------------
